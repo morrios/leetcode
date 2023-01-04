@@ -14,7 +14,11 @@ from typing import Optional
 
 
 class Solution:
-    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+    #迭代
+    def __init__(self):
+        self.successor = None
+
+    def reverseBetween_diedai(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
         cur = None
         dumy = ListNode(-1,head)
         pre = dumy
@@ -28,7 +32,29 @@ class Solution:
             pre.next = next
             
         return dumy.next
-            
+    #递归
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        #base
+        if(left == 1):
+            return self.reverseN(head, right)
+        #递归调用
+        head.next = self.reverseBetween(head.next, left - 1, right - 1)
+        #后续处理
+        return head
+    #翻转链表前N个节点
+    
+    def reverseN(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        #base
+        if(n == 1):
+            self.successor = head.next
+            return head
+        #递归
+        last = self.reverseN(head.next, n -1)
+        head.next.next = head
+        head.next = self.successor
+        return last
+
+    
 # @lc code=end
 
 def generate_node(nums):
